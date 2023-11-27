@@ -14,6 +14,8 @@ Before that, install django on your machine (pip install django) and also these 
 pip install django-crispy-forms
 pip install django-simple-history
 
-Go to the link the terminal will give you and start managing your projects ! 
+Go to the link the terminal will give you and start managing your projects !
+
+PS : An error may be displayed when you access the sites. In the url bar, type /login and register on the platform or log in if you already have an account
 
 
