@@ -1,0 +1,18 @@
+{% extends "HelbManager/base.html" %}
+{% block content %}
+<h1 class="mb-3">Project by {{ view.kwargs.username }}</h1>
+{% for project in projects%}
+<h1>TEST</h1>
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ project.user.image.url }}">
+        <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="{% url 'project-detail' project.id %}">{{ project.author }}</a>
+            <small class="text-muted">{{ project.date_posted | date:"F d, Y" }}</small>
+        </div>
+        <h2><a class="article-title" href="{% url 'project-detail' project.id %}">{{ project.title }}</a></h2> <!-- attention ici-->
+        <p class="article-content">{{ project.content }}</p>
+        </div>
+    </article>
+{% endfor %}
+{% endblock content %}

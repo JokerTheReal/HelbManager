@@ -1,0 +1,78 @@
+{% extends "HelbManager/base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <article class="media content-section">
+                <img class="rounded-circle article-img" src="{{ object.user.image.url }}">
+                <div class="media-body">
+                    <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ user.username }}</a>
+                    <small class="text-muted">{{ context.project.date_posted | date:"F d, Y" }}</small>
+                    <h2 class="project-title">{{ project.title }}</h2>
+                    <p class="article-content">{{ project.content }}</p>
+                    {% if project.author == user %}
+                    <div>
+                        <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'project-update' project.id %}">Update</a>
+                        <a class="btn-danger btn-sm mt-1 mb-1" href="{% url 'project-delete' project.id %}">Delete</a>
+                        <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'task-create' project.id %}">Create Task</a>
+                    {% endif %}
+                    <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'HelbManager-taskFlow' project.id %}">Task flow</a>
+                    </div>  
+                </div>
+            </article> 
+            {% for task in tasks%}
+            {%if task.project_id == project.id%}
+                <div class="media-body">
+                    <div class="article-metadata">
+                        <a class="mr-2" href="{% url 'task-detail' task.id %}">{{ task.name }}</a>
+                        {% if task.status == 1 %}
+                           <small style="color: blue; font-style: italic">(Not started)</small>
+                        {% endif %}
+                        {% if task.status == 2 %}
+                            <small style="color: orange; font-style: italic">(In progress)</small>
+                        {% endif %}
+                        {% if task.status == 3 %}
+                            <small style="color: green; font-style: italic">(Done)</small>
+                        {% endif %}
+                        {% if task.status == 4 %}
+                            <small style="color: red; font-style: italic" >(In revision)</small>
+                        {% endif %}
+                        <p>{{ task.content }}</p>
+                    </div>
+                </div>  
+            {% endif %}
+        {% endfor %}
+        </div>
+        <div class="col-lg-4">
+            <main role="main" class="container">
+                <div class="row">
+                  <div class="col-md-12">
+                    {% if messages %}
+                      {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} ">
+                          {{ message }}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+                  </div>
+                  {% if project.author == user %}
+                    <div class="col-md-12">
+                        <div class="content-section">
+                          <h6>Project progress</h6>
+                          <p class='text-muted'>
+                            <ul class="list-group">
+                              <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'HelbManager-project-progress' project.id %}">Progression</a>
+                              <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'HelbManager-historypage' project.id %}">History</a>
+                            </ul>
+                          </p>
+                        </div>
+                    </div>
+                  {% endif %}
+            </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

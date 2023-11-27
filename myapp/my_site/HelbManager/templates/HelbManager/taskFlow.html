@@ -1,0 +1,195 @@
+{% extends "HelbManager/base.html" %}
+{% block content %}
+
+<head>
+<style>
+        #div1, #div2 {
+          float: left;
+          width: 100px;
+                    height: 35px;
+      margin: 10px;
+      padding: 10px;
+        border: 1px solid black;
+    }
+</style>
+
+<script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+    
+    function drag(ev) {
+      console.log(ev.target.id)
+      ev.dataTransfer.setData("taskid", ev.target.id);
+    }
+    
+    function drag2(ev) {
+      console.log(ev.target.id)
+      ev.dataTransfer.setData("subtaskid", ev.target.id);
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      var taskId = ev.dataTransfer.getData("taskid");
+      var subtaskid = ev.dataTransfer.getData("subtaskid");
+      var taskStatus = ev.target.attributes["name"].value;
+      var url;
+      if(taskId)
+      {
+        ev.target.appendChild(document.getElementById(taskId));
+        url = "http://localhost:8000/update-task-status/" + taskId + "/status/";
+      }
+      if(subtaskid)
+      {
+        ev.target.appendChild(document.getElementById(subtaskid));
+        url = "http://localhost:8000/update-subtask-status/" + subtaskid + "/status/";
+      }
+
+      if(taskStatus == 'inprogress'){
+        console.log('inprogress');
+        $.ajax({
+        url: url + 2,
+        //data : { request_data: request_data},
+        success : function(json) {
+            $("#request-access").hide();
+            console.log("requested access complete");
+            location.reload(); 
+        }
+      })
+      }
+      if(taskStatus == 'done'){
+        console.log('done');
+        $.ajax({
+        url: url + 3,
+        //data : { request_data: request_data},
+        success : function(json) {
+            $("#request-access").hide();
+            console.log("requested access complete");
+            location.reload(); 
+        }
+      })
+      }
+      if(taskStatus == 'inrevision'){
+        console.log('inrevision');
+
+        $.ajax({
+        url: url + 4,
+        //data : { request_data: request_data},
+        success : function(json) {
+            $("#request-access").hide();
+            console.log("requested access complete");
+            location.reload(); 
+        }
+      })
+      }
+    }
+    </script>
+</head>
+
+<body>
+
+    <h2>Drag and Drop</h2>
+
+    <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <img src="img_w3slogo.gif" draggable="true" ondragstart="drag(event)" id="drag1" width="88" height="31">
+    </div>
+    
+    <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
+
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+        <th class="bg-info" >To do</th>
+        <th class="bg-warning" name="inprogress" ondrop="drop(event)" ondragover="allowDrop(event)">In progress</th>
+        <th class="bg-success" name="done" ondrop="drop(event)" ondragover="allowDrop(event)">Done</th>
+        <th class="bg-danger" name="inrevision" ondrop="drop(event)" ondragover="allowDrop(event)">In revision</th>
+        </tr>
+      </thead>
+      {% for task in tasks%}
+      <tr>
+        <td>
+          <div>
+            {%if task.status == 1%}
+                <img src="" style="color:#3350f1" width="100%" alt="{{ task.name }} (assigned to {{task.assign}})" draggable="true" ondragstart="drag(event)" id={{task.id}} height="100%">
+            {% endif %}
+        </td>
+        <td>
+          <div>
+            {%if task.status == 2%}
+                <img src="" style="color:#3350f1" width="100%"" alt="{{ task.name }} (assigned to {{task.assign}})" draggable="true" ondragstart="drag(event)" id={{task.id}} height="100%"">
+            {% endif %}
+          </div>
+        </td>
+        <td>
+          <div>
+            {%if task.status == 3%}
+                <img src="" style="color:#3350f1" width="100%"" alt="{{ task.name }} (assigned to {{task.assign}})" draggable="true" ondragstart="drag(event)" id={{task.id}} height='100%'>
+            {% endif %}
+          </div>
+        </td>
+        <td>
+          <div>
+            {%if task.status == 4%}
+                <img src="" style="color:#3350f1" width='100%' alt="{{ task.name }} (assigned to {{task.assign}})" draggable="true" ondragstart="drag(event)" id={{task.id}} height="100%">
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+      {% for subtask in subtasks%}
+      <tr>
+        <td>
+          <div>
+              {%if subtask.status == 1%}
+              <div>
+                <img src="" style="color:#33bbf1" width="100%" alt="{{ subtask.name }}({{subtask.task.name}},  {{subtask.assign}})" draggable="true" ondragstart="drag2(event)" id={{subtask.id}}  height="100%"">
+              </div>
+              {% endif %}
+        </td>
+        <td>
+          <div>
+            {%if subtask.status == 2%}
+            <div>
+              <img src="" style="color:#33bbf1" width="100%"" alt="{{ subtask.name }} ({{subtask.task.name}},  {{subtask.assign}})" draggable="true" ondragstart="drag2(event)" id={{subtask.id}}  height='100%'>
+            </div>
+            {% endif %}
+          </div>
+        </td>
+        <td>
+          <div>
+              {%if subtask.status == 3%}
+              <div>
+                <img src="" style="color:#33bbf1" width="100%"" alt="{{ subtask.name }} ({{subtask.task.name}},  {{subtask.assign}})" draggable="true" ondragstart="drag2(event)" id={{subtask.id}}  height="100%">
+              </div>
+              {% endif %}
+          </div>
+        </td>
+        <td>
+          <div>
+            {%if subtask.status == 4%}
+              <div>
+                <img src="" style="color:#33bbf1" width='100%' alt="{{ subtask.name }} ({{subtask.task.name}},  {{subtask.assign}})" draggable="true" ondragstart="drag2(event)" id={{subtask.id}} height="100%">
+              </div>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </br>
+    <div class="mt-2 ml-5">
+      <div class="row">
+        <div style="background-color:#3350f1; height: 20px;" class="col-lg-1"></div>
+        <div style="height: 10px;" class="col-lg-11">
+          <p class="text-muted">Task</p>
+        </div>
+        <div style="background-color:#33bbf1; height: 20px;" class="col-lg-1"></div>
+        <div style="height: 10px;" class="col-lg-11">
+          <p class="text-muted">Subtask</p>
+        </div>
+      </div>
+    </div>
+    </body>
+{% endblock content %}
+
+ 

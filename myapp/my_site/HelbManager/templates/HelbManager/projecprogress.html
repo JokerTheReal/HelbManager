@@ -1,0 +1,58 @@
+{% extends "HelbManager/base.html" %}
+{% block content %}
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="row">Project progression</th>
+            <th scope="row">Total tasks: {{taskCount}}</th>
+          </tr>
+        </thead>
+      </table>
+   <!-- <p>Start date : {{project.title}}</p>-->
+<div class="row">
+    <div class="col-lg-6">
+        <span style="float:left; width: 120px;">To do</span>
+    </div>
+    <div class="col-lg-6">
+        <div class="progress">
+            <div class="progress-bar bg-info" role="progressbar" style="width: {{taskToDoCount}}%;">
+                {{taskToDoCount}}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <span style="float:left; width: 120px;">In progress</span>
+    </div>
+    <div class="col-lg-6">
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{taskToInprogressCount}}%;">
+                {{taskToInprogressCount}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <span style="float:left; width: 120px;">Done</span>
+    </div>
+    <div class="col-lg-6">
+        <div class="progress">
+            <div class="progress-bar bg-warning" role="progressbar" style="width: {{taskToDoneCount}}%;">
+                {{taskToDoneCount}}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <span style="float:left; width: 120px;">In revision</span>
+    </div>
+    <div class="col-lg-6">
+        <div class="progress">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: {{taskToInrevisionCount}}%;">
+                {{taskToInrevisionCount}}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+ 

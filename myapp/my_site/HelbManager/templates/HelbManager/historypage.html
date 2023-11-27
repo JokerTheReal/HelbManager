@@ -1,0 +1,81 @@
+{% extends "HelbManager/base.html" %}
+{% block content %}
+{% for project in projects%}
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="#"> <!--{{ project.author.profile.image.url }}-->
+        <div class="media-body">
+        <div class="article-metadata">
+            <!-- <a class="mr-2" href="{% url 'project-detail' project.id %}">{{ project.author.username }}</a> -->
+            <small class="text-muted">{{ project.date_posted | date:"F d, Y" }}</small>
+        </div>
+        <!-- <h2><a class="article-title" href="{% url 'project-detail' project.id %}">{{ project.title }}</a></h2> -->
+        <!-- <p class="article-content">{{ project.content }}</p> -->
+    </article>
+{% endfor %}
+
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Project History</th>
+      </tr>
+    </thead>
+  </table>
+
+<table class="table table-hover table-dark" style="width:100%">
+
+    <tr>
+        <th scope="col">Element Name</th>
+        <th scope="col">Element Type</th>
+        <th scope="col">Old value</th>
+        <th scope="col">New value</th>
+        <th scope="col">When</th>
+        <th scope="col">User</th>
+    </tr>
+
+    {% for projectHistoryElement in projectHistoryElements%}
+            <tr scope="row">
+                <td><p>{{projectHistoryElement.entityName}}</p></td>
+                <td><p>{{projectHistoryElement.entityType}}</p></td>
+                    <td>
+                    {%if projectHistoryElement.fromValue == 1%}
+                        <p>To do</p>
+                    {% endif %}
+
+                    {%if projectHistoryElement.fromValue == 2%}
+                        <p>In progress</p>
+                    {% endif %}
+
+                    {%if projectHistoryElement.fromValue == 3%}
+                        <p>Done</p>
+                    {% endif %}
+
+                    {%if projectHistoryElement.fromValue == 4%}
+                        <p>In revision</p>
+                    {% endif %}
+                </td>
+                <td>
+                    {%if projectHistoryElement.toValue == 1%}
+                        <p>To do</p>
+                    {% endif %}
+
+                    {%if projectHistoryElement.toValue == 2%}
+                        <p>In progress</p>
+                    {% endif %}
+
+                    {%if projectHistoryElement.toValue == 3%}
+                        <p>Done</p>
+                    {% endif %}
+
+                    {%if projectHistoryElement.toValue == 4%}
+                        <p>In revision</p>
+                    {% endif %}
+                </td>
+                <td><p>{{projectHistoryElement.when}}</p></td>
+                <td><p>{{projectHistoryElement.author}}</p></td>
+
+            </tr>
+    {% endfor %}
+</table>
+{% endblock content %}
+
+ 

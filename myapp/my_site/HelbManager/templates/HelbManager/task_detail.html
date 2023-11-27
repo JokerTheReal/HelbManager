@@ -1,0 +1,41 @@
+{% extends "HelbManager/base.html" %}
+{% block content %}
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ object.user.image.url }}">
+        <div class="media-body">
+            <div class="article-metadata">
+            <!-- <a class="mr-2" href="#">{{ user.username }}</a>
+                <small class="text-muted">{{ object.date_posted | date:"F d, Y" }}</small> -->
+                <h2 class="project-title">{{ task.name }}</h2>
+                <p class="article-content">{{ task.content }}</p>
+                <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'task-update' task.id %}">Update</a>
+                <a class="btn-danger btn-sm mt-1 mb-1" href="{% url 'task-delete' task.id %}">Delete</a>
+                <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'subtask-create' task.id %}">Create SubTask</a>            
+            </div>
+    </article> 
+    {% for subtask in subtasks%}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <p>{{ subtask.name }}</p>
+                {% if subtask.status == 1 %}
+                   <small style="color: blue; font-style: italic">(Not started)</small>
+                {% endif %}
+                {% if subtask.status == 2 %}
+                    <small style="color: orange; font-style: italic">(In progress)</small>
+                {% endif %}
+                {% if subtask.status == 3 %}
+                    <small style="color: green; font-style: italic">(Done)</small>
+                {% endif %}
+                {% if subtask.status == 4 %}
+                    <small style="color: red; font-style: italic" >(In revision)</small>
+                {% endif %}
+                <p>{{ subtask.content }}</p>
+                <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'subtask-update' subtask.id %}">Update</a>
+                <a class="btn-danger btn-sm mt-1 mb-1" href="{% url 'subtask-delete' subtask.id %}">Delete</a>
+
+            </div>
+        </div> 
+    </article>
+    {% endfor %}
+{% endblock content %}
